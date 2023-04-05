@@ -8,10 +8,12 @@
                 <div class="card-header">Dashboard</div>
                 <div class="card-body">
                     <span class="bg-success text-light">You are Admin.</span>
+                    <p>Current  Time Zone : {{ $data }}</p>
+                    
 
-                    <table class="table table-bordered">
+                    <table class="table table-bordered table-striped">
                         <thead>
-                            <tr>
+                            <tr class="">
                                 <th>Sr#</th>
                                 <th>Name</th>
                                 <th>Email</th>
@@ -22,10 +24,11 @@
                         <tbody>
                             @foreach ($users as $user)
                             <tr>
+
                                 <td> {{ ++$i }}</td>
                                 <td> {{ $user->name }} </td>
                                 <td> <span class="badge bg-danger"> {{ $user->email }}</span></td>
-                              
+
                                 <td>
                                     @if($user->is_admin == 1)
 
@@ -34,7 +37,7 @@
                                     @elseif($user->is_admin == 0)
 
                                     Inactive User
-                                    
+
                                     @endif
                                 </td>
                                 <td>
@@ -49,6 +52,10 @@
 
                         </tbody>
                     </table>
+
+                    <div class="d-flex justify-content-center">
+                        {!! $users->links() !!}
+                    </div>
 
 
                 </div>

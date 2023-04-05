@@ -24,3 +24,7 @@ Route::get('admin/home', [App\Http\Controllers\HomeController::class, 'index'])-
 
 //Product Route
 Route::resource('/users', 'App\Http\Controllers\HomeController');
+
+//Collection Controller
+Route::get('/controller', 'App\Http\Controllers\CollectionController@index');
+

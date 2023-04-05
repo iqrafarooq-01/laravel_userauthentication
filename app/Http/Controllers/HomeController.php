@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
+use Config;
 
 class HomeController extends Controller
 {
@@ -32,10 +33,30 @@ class HomeController extends Controller
     public function index()
     {
 
+        //  /* Example 1: Get Config Value in Laravel */
+        //  $appName = Config::get('app.name');
+
+        //  /* Example 2: Get Config Value in Laravel */
+        //  $appName2 = config('app.timezone', 'UTC');
+
+        //  $appName3 = Config::set('database.default', 'sqlite');
+
+        //  return view('test', compact('appName2'));
+        //  dd($appName, $appName2, $appName3);
+
+        //Pass multiple data to view 
+        // $users = [
+        //     'timezone' => config('app.timezone', 'PST'),
+        //     'users'    => User::latest()->paginate(10),
+
+        // ];
+
+        $data =  config('timezone', 'PST');
         $users = User::latest()->paginate(10);
 
         return view('adminHome', compact('users'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+            ->with('i', (request()->input('page', 1) - 1) * 10)
+            ->with('data', $data);// pass multi variables to view
     }
 
     public function create()
@@ -55,7 +76,7 @@ class HomeController extends Controller
 
         User::create($request->all());
 
-        return redirect()->route('users.adminHome')
+        return redirect()->route('users.index')
             ->with('success', 'User created successfully.');
     }
 
@@ -75,7 +96,7 @@ class HomeController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
-            
+
 
         ]);
 
@@ -83,14 +104,12 @@ class HomeController extends Controller
         //     'password'->Hash::make($request->password)])));
 
 
-        $request->request->remove('password_confirmation'); 
+        $request->request->remove('password_confirmation');
         (!$request->filled('password')) ? $request->request->remove('password') : "";
-        ($request->has('password')) ?$request->merge(['password' => Hash::make($request->post()['password'])]) : "";
+        ($request->has('password')) ? $request->merge(['password' => Hash::make($request->post()['password'])]) : "";
         $user->update($request->all());
 
         return redirect()->route('users.index')
             ->with('success', 'Users updated successfully');
-      
     }
-
 }
