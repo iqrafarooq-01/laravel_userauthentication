@@ -8,4 +8,4 @@ Laravel Multi Authentication Project
         3- Login Registration Also integrate the Email Service using mailtrap
     ==============================================================================================================================================================
 
-
+ Pushed on GIT  laravel_userauthentication 
